@@ -3,13 +3,15 @@ import datetime
 from peewee import *
 from flask_login import UserMixin
 from playhouse.db_url import connect
+# from playhouse.migrate import * # not working for me
 
 
 if 'ON_HEROKU' in os.environ:
-    DATABASE = connect(os.environ.get('DATABASE_URL')) 
+	DATABASE = connect(os.environ.get('DATABASE_URL')) 
 
 else:
 	DATABASE = SqliteDatabase('issues.sqlite')
+	# migrator = SqliteMigrator(DATABASE) # not working for me
 
 
 class User(UserMixin, Model): #User must come before Issue or you get a "NameError: name 'User' is not defined"
@@ -41,11 +43,22 @@ class Issue(Model):
 
 
 class Comment(Model):
-	issue = ForeignKeyField(Issue, backref='comments') #represents one to many OR
-															#backref = 'comments'
+	body = CharField()
+	created_at = DateTimeField(default=datetime.datetime.now)
+	# added created_by to relate a comment to the person creating the comment
+	created_by = ForeignKeyField(User, backref='comments')# Represents One-to-Many
+	assoc_issue_id = IntegerField()
+	# test = CharField()
+
+
 	class Meta:
 		db_table = 'comments'
 		database = DATABASE
+
+# migrate( # only use this if you make a change to the schema
+# *** DOES NOT WORK FOR ME...Have to DROP TABLE instead ***
+#     migrator.drop_column('comments', 'assoc_issue_id'),
+# )
 
 
 

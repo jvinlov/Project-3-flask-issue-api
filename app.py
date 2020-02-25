@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_login import LoginManager
 from resources.issues import issue
 from resources.users import user
+from resources.comments import comment
 import models
 
 
@@ -54,6 +55,9 @@ app.register_blueprint(issue, url_prefix='/api/v1/issues')
 
 CORS(user, origins=['http://localhost:3000', 'https://fast-lake-95373-2.herokuapp.com', 'https://walter-react-issue-client.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/api/v1/users')
+
+CORS(comment, origins=['http://localhost:3000', 'https://fast-lake-95373-2.herokuapp.com', 'https://walter-react-issue-client.herokuapp.com'], supports_credentials=True)
+app.register_blueprint(comment, url_prefix='/api/v1/comments')
 
 
 if 'ON_HEROKU' in os.environ:

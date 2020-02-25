@@ -1,0 +1,30 @@
+===============================================================================
+https://pypi.org/project/peewee-migrations/
+Steps for installing peewee-migrations
+$ pip3 install peewee-migrations
+$ pip3 freeze > requirements.txt
+
+Run pem init in the project root.
+$ pem init
+
+Add a model to the watch list and create migration.
+$ pem add models.<model-name>     (ex: models.Comment)
+$ pem watch
+
+***Migration error: Sqlite is not supported***
+$ pip3 uninstall peewee-migrations
+===============================================================================
+http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#migrate
+Schema Migrations
+
+from playhouse.migrate import *
+
+Instantiate a migrator. The SchemaMigrator class is responsible for generating schema altering operations, which can then be run sequentially by the migrate() helper.
+# SQLite example:
+my_db = SqliteDatabase('my_database.db')
+migrator = SqliteMigrator(my_db)
+
+Use migrate() to execute one or more operations:
+see the link above for Supported Operations
+***THIS DID NOT WORK FOR ME***
+===============================================================================
